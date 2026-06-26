@@ -19,6 +19,26 @@ namespace ClinicConnectStaff.Controllers
             _context = context;
         }
 
+        private void PopulateDropdowns(object? selectedDoctor = null, object? selectedTime = null, object? selectedStatus = null)
+        {
+            ViewBag.DoctorOptions = new SelectList(new[]
+            {
+                new { Value = "Dr. Sharma", Text = "Dr. Sharma — Family Medicine" },
+                new { Value = "Dr. Patel", Text = "Dr. Patel — Dermatology" },
+                new { Value = "Dr. Singh", Text = "Dr. Singh — Pediatrics" },
+            }, "Value", "Text", selectedDoctor);
+
+            ViewBag.TimeOptions = new SelectList(new[]
+            {
+                "9:00 AM", "10:30 AM", "1:00 PM", "3:30 PM"
+            }, selectedTime);
+
+            ViewBag.StatusOptions = new SelectList(new[]
+            {
+                "Upcoming", "Completed", "Cancelled"
+            }, selectedStatus);
+        }
+
         // GET: Appointments
         public async Task<IActionResult> Index()
         {
@@ -49,6 +69,7 @@ namespace ClinicConnectStaff.Controllers
         public IActionResult Create()
         {
             ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "FullName");
+            PopulateDropdowns();
             return View();
         }
 
@@ -66,6 +87,7 @@ namespace ClinicConnectStaff.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "FullName", appointment.PatientId);
+            PopulateDropdowns(appointment.DoctorName, appointment.AppointmentTime, appointment.Status);
             return View(appointment);
         }
 
@@ -83,6 +105,7 @@ namespace ClinicConnectStaff.Controllers
                 return NotFound();
             }
             ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "FullName", appointment.PatientId);
+            PopulateDropdowns(appointment.DoctorName, appointment.AppointmentTime, appointment.Status);
             return View(appointment);
         }
 
@@ -119,6 +142,7 @@ namespace ClinicConnectStaff.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "FullName", appointment.PatientId);
+            PopulateDropdowns(appointment.DoctorName, appointment.AppointmentTime, appointment.Status);
             return View(appointment);
         }
 

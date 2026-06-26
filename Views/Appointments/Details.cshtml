@@ -1,69 +1,35 @@
 @model ClinicConnectStaff.Models.Appointment
 
 @{
-    Layout = null;
+    ViewData["Title"] = "Appointment Details";
 }
 
-<!DOCTYPE html>
+<div class="cc-page">
+    <div class="cc-page-header">
+        <h1>Appointment Details</h1>
+    </div>
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Details</title>
-</head>
-<body>
-
-<div>
-    <h4>Appointment</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Patient)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Patient.FullName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DoctorName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DoctorName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Specialty)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Specialty)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AppointmentDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AppointmentDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AppointmentTime)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AppointmentTime)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Status)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Status)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Notes)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Notes)
-        </dd>
-    </dl>
+    <div class="cc-card" style="padding:24px;">
+        <dl class="row">
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Patient)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.Patient.FullName)</dd>
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.DoctorName)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.DoctorName)</dd>
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Specialty)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.Specialty)</dd>
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.AppointmentDate)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.AppointmentDate)</dd>
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.AppointmentTime)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.AppointmentTime)</dd>
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Status)</dt>
+            <dd class="col-sm-9">
+               @{ var statusClass = Model!.Status.Trim().ToLower() == "upcoming" ? "cc-badge-upcoming" : "cc-badge-completed"; }
+                <span class="cc-badge @statusClass">@Model.Status</span>
+            </dd>
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Notes)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.Notes)</dd>
+        </dl>
+        <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn-cc-primary">Edit</a>
+        <a asp-action="Index" class="btn-cc-outline" style="margin-left:8px;">Back to List</a>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
-</body>
-</html>

@@ -1,8 +1,72 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Dashboard";
+    var todaysAppointments = ViewBag.TodaysAppointments as IEnumerable<ClinicConnectStaff.Models.Appointment>;
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="cc-page">
+    <div class="cc-page-header">
+        <h1>Dashboard</h1>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-4 mb-3">
+            <div class="cc-card" style="padding:20px;">
+                <p style="color:var(--cc-muted); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.5px; margin:0;">Total Patients</p>
+                <p style="font-family:'Sora',sans-serif; font-size:2rem; font-weight:700; margin:6px 0 0; color:var(--cc-pine);">@ViewBag.TotalPatients</p>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="cc-card" style="padding:20px;">
+                <p style="color:var(--cc-muted); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.5px; margin:0;">Total Appointments</p>
+                <p style="font-family:'Sora',sans-serif; font-size:2rem; font-weight:700; margin:6px 0 0; color:var(--cc-pine);">@ViewBag.TotalAppointments</p>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="cc-card" style="padding:20px;">
+                <p style="color:var(--cc-muted); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.5px; margin:0;">Upcoming</p>
+                <p style="font-family:'Sora',sans-serif; font-size:2rem; font-weight:700; margin:6px 0 0; color:var(--cc-coral);">@ViewBag.UpcomingCount</p>
+            </div>
+        </div>
+    </div>
+
+    <h2 style="font-size:1.2rem; margin-bottom:12px;">Today's Appointments</h2>
+
+    <div class="cc-card">
+        @if (todaysAppointments != null && todaysAppointments.Any())
+        {
+            <table class="cc-table">
+                <thead>
+                    <tr>
+                        <th>Patient</th>
+                        <th>Doctor</th>
+                        <th>Time</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var appt in todaysAppointments)
+                    {
+                        <tr>
+                            <td>@appt.Patient?.FullName</td>
+                            <td>@appt.DoctorName</td>
+                            <td>@appt.AppointmentTime</td>
+                            <td>
+                               @{ var statusClass = appt.Status.Trim().ToLower() == "upcoming" ? "cc-badge-upcoming" : "cc-badge-completed"; }
+                                <span class="cc-badge @statusClass">@appt.Status</span>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p style="padding:24px; color:var(--cc-muted); margin:0;">No appointments scheduled for today.</p>
+        }
+    </div>
+
+    <div style="margin-top:20px;">
+        <a asp-controller="Appointments" asp-action="Create" class="btn-cc-primary">+ New Appointment</a>
+        <a asp-controller="Patients" asp-action="Create" class="btn-cc-outline" style="margin-left:8px;">+ Add Patient</a>
+    </div>
 </div>
